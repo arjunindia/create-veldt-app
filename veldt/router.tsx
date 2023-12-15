@@ -6,7 +6,7 @@
  */
 import veldt from "veldt";
 type RouteProps = {
-  path?: string | string[];
+  path?: string;
   Component?: any;
   exact?: boolean;
   strict?: boolean;
@@ -20,8 +20,18 @@ const Route = ({
   children,
 }: RouteProps) => {
   const url = window.location.pathname;
-  const match = path === url;
-
+  const parsedPath = path?.split("/");
+  const parsedUrl = url.split("/");
+  let match = true;
+  let params: { [key: string]: string } = {};
+  parsedPath?.forEach((path, index) => {
+    if (path.substring(0, 1) === ":") {
+      params[path.substring(1)] = parsedUrl[index];
+    }
+    if (path !== parsedUrl[index]) {
+      return (match = false);
+    }
+  });
   if (match) {
     if (Component) {
       return <Component />;
@@ -31,4 +41,19 @@ const Route = ({
   }
 };
 
-export { Route };
+const Link = ({ to, children }: { to: string; children?: any }) => {
+  return (
+    <a
+      href={to}
+      onClick={(e: any) => {
+        e.preventDefault();
+        window.history.pushState({}, "", to);
+        window.dispatchEvent(new Event("popstate"));
+      }}
+    >
+      {children}
+    </a>
+  );
+};
+
+export { Route, Link };
