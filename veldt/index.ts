@@ -161,7 +161,13 @@ const Fragment = (props: any, children: any[]) => {
       if (child === null) {
         return;
       }
-      fragment.appendChild(document.createTextNode(child));
+      if (child instanceof Function) {
+        fragment.appendChild(child());
+        return;
+      }
+      if (typeof child === "string") {
+        fragment.appendChild(document.createTextNode(child));
+      }
     }
   });
   return fragment;
