@@ -153,13 +153,13 @@ const render = (element: HTMLElement, container: HTMLElement) => {
 
 /**
  * insertBefore
- * @description inserts an element before another element.
+ * @description inserts an element into an element, inserts before existing children.
  * @param newNode
  * @param referenceNode
  * @returns void
  **/
 const insertBefore = (newNode: HTMLElement, referenceNode: HTMLElement) => {
-  referenceNode.parentNode?.insertBefore(newNode, referenceNode);
+  referenceNode.insertBefore(newNode, referenceNode.firstChild);
 };
 
 /**
@@ -170,7 +170,11 @@ const insertBefore = (newNode: HTMLElement, referenceNode: HTMLElement) => {
  * @returns void
  **/
 const insertAfter = (newNode: HTMLElement, referenceNode: HTMLElement) => {
-  referenceNode.parentNode?.insertBefore(newNode, referenceNode.nextSibling);
+  if (referenceNode.lastChild === null) {
+    referenceNode.appendChild(newNode);
+    return;
+  }
+  referenceNode.insertBefore(newNode, referenceNode.lastChild.nextSibling);
 };
 
 /**
