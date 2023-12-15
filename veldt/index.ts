@@ -165,11 +165,11 @@ const render = (element: HTMLElement, container: HTMLElement) => {
       container.removeChild(container.firstChild);
     }
   } else {
-    if (container.firstChild) {
-      container.replaceChild(element, container.firstChild);
-    } else {
-      container.appendChild(element);
+    //replace all children
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
     }
+    container.appendChild(element);
   }
   effects.pop()?.callback();
 };
