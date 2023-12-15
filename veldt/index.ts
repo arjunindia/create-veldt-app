@@ -17,6 +17,10 @@
  * veldt.render(<App />, document.getElementById('root'));
  **/
 
+console.warn(
+  "Veldt is alpha-alpha-alpha experimental software. This is not made for serious software yet. Use at your own risk."
+);
+
 /**
  * polyfill
  * @description polyfills the document object. This is needed for server side rendering.
