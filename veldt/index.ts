@@ -53,17 +53,40 @@ const effects: any[] = [];
  * @returns HTMLElement | Text Node
  */
 const createElement = (
-  type: string | Function,
+  type:
+    | string
+    | Function
+    | HTMLElement
+    | Text
+    | DocumentFragment
+    | Element
+    | null,
   props: Record<string, any>,
   ...children: any[]
 ): HTMLElement | any => {
-  if (typeof type === "function") {
+  if (!props || !props?.children) {
+    if (!props) props = {};
+    props["children"] = children;
+  }
+  if (typeof type === "function" || type instanceof Function) {
     if (props && props?.ref) {
       props.ref.current = type(props, children);
       return props.ref.current;
     }
     return type(props, children);
   }
+  if (type === null) {
+    return null;
+  }
+  if (
+    type instanceof HTMLElement ||
+    type instanceof Text ||
+    type instanceof DocumentFragment ||
+    type instanceof Element
+  ) {
+    return type;
+  }
+
   const element = document.createElement(type);
   props &&
     Object.keys(props).forEach((key) => {
@@ -97,8 +120,13 @@ const createElement = (
         props[key].current = element;
         return;
       }
+      if (key === "dangerouslySetInnerHTML") {
+        element.innerHTML = props[key].__html;
+        return;
+      }
       element.setAttribute(key, props[key]);
     });
+
   children.forEach((child) => {
     if (typeof child === "string") {
       element.appendChild(document.createTextNode(child));
@@ -111,7 +139,30 @@ const createElement = (
       ) {
         element.appendChild(child);
         return;
-      } else {
+      } else if (child instanceof Array) {
+        child.forEach((c) => {
+          if (typeof c === "string") {
+            element.appendChild(document.createTextNode(c));
+          } else if (
+            c instanceof HTMLElement ||
+            c instanceof Text ||
+            c instanceof DocumentFragment ||
+            c instanceof Element
+          ) {
+            element.appendChild(c);
+          } else {
+            element.appendChild(document.createTextNode(c));
+          }
+        });
+      }
+      if (child === null) {
+        return;
+      }
+      if (child instanceof Function) {
+        element.appendChild(child());
+        return;
+      }
+      if (typeof child === "string") {
         element.appendChild(document.createTextNode(child));
       }
     }
