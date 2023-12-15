@@ -123,8 +123,31 @@ const Fragment = (props: any, children: any[]) => {
   children.forEach((child) => {
     if (typeof child === "string") {
       fragment.appendChild(document.createTextNode(child));
-    } else {
+    } else if (
+      child instanceof HTMLElement ||
+      child instanceof Text ||
+      child instanceof DocumentFragment ||
+      child instanceof Element
+    ) {
       fragment.appendChild(child);
+    } else if (child instanceof Array) {
+      child.forEach((c) => {
+        if (typeof c === "string") {
+          fragment.appendChild(document.createTextNode(c));
+        } else if (
+          c instanceof HTMLElement ||
+          c instanceof Text ||
+          c instanceof DocumentFragment ||
+          c instanceof Element
+        ) {
+          fragment.appendChild(c);
+        } else {
+          fragment.appendChild(document.createTextNode(c));
+        }
+      });
+    } else {
+      fragment.appendChild(document.createTextNode(child));
+      console.log(child);
     }
   });
   return fragment;
