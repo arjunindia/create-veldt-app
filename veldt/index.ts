@@ -247,6 +247,9 @@ const effect = (callback: Function) => {
  * @returns string
  */
 const uuid = () => {
+  if (typeof crypto !== "undefined") {
+    return crypto.getRandomValues(new Uint32Array(1))[0].toString(36);
+  }
   return Math.random().toString(36).substring(2) + Date.now().toString(36);
 };
 
