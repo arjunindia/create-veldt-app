@@ -40,4 +40,5 @@ To build Veldt, run `npm run build`. This will create a `build` folder with the 
 
 ## Contributing
 
+The entire source code for the library itself is in `veldt/index.ts`.
 I'm more than welcome to accept contributions to this project. Veldt is just a learning project for me right now. If you have any suggestions, please open an issue or a pull request.
