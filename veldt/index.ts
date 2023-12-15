@@ -99,7 +99,12 @@ const createElement = (
     if (typeof child === "string") {
       element.appendChild(document.createTextNode(child));
     } else {
-      if (child instanceof HTMLElement || child instanceof Text) {
+      if (
+        child instanceof HTMLElement ||
+        child instanceof Text ||
+        child instanceof DocumentFragment ||
+        child instanceof Element
+      ) {
         element.appendChild(child);
         return;
       } else {
@@ -119,7 +124,14 @@ const createElement = (
  */
 const Fragment = (props: any, children: any[]) => {
   const fragment = document.createDocumentFragment();
-
+  if (props && props?.ref) {
+    props.ref.current = fragment;
+  }
+  if (typeof children === "string") {
+    fragment.appendChild(document.createTextNode(children));
+    return fragment;
+  }
+  if (children.length === 0) return fragment;
   children.forEach((child) => {
     if (typeof child === "string") {
       fragment.appendChild(document.createTextNode(child));
@@ -146,8 +158,10 @@ const Fragment = (props: any, children: any[]) => {
         }
       });
     } else {
+      if (child === null) {
+        return;
+      }
       fragment.appendChild(document.createTextNode(child));
-      console.log(child);
     }
   });
   return fragment;
