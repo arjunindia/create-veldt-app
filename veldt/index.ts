@@ -162,8 +162,8 @@ const createElement = (
         element.appendChild(child());
         return;
       }
-      if (typeof child === "string") {
-        element.appendChild(document.createTextNode(child));
+      if (typeof child === "string" || typeof child === "number") {
+        element.appendChild(document.createTextNode(child.toString()));
       }
     }
   });
