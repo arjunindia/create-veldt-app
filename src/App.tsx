@@ -16,8 +16,10 @@ const Lol = ({
       </div>
       <button
         onClick={() => {
-          ref.current!.innerText = `${count++}`;
-          imgRef.current!.style.filter = `blur(${count}px)`;
+          ref.current!.innerText = `${++count}`;
+          imgRef.current!.style.filter = `blur(${count}px) brightness(${
+            count + 1
+          })`;
         }}
       >
         Count ++
@@ -44,7 +46,8 @@ const App = () => {
             alt="sound"
             ref={ref}
             style={{
-              filter: `blur(${count}px)`,
+              filter: `blur(${count}px) brightness(${count + 1})`,
+              transition: "filter 0.5s ease",
             }}
           />
         </p>

@@ -27,13 +27,16 @@ main {
   height: auto;
   margin: 0 auto;
   display: block;
-  padding: 1rem 0;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+  object-fit: cover;
 }
 p {
   font-size: 1.1rem;
   line-height: 1.5;
   margin: 0;
   padding: 0;
+  color: #cecece;
 }
 .counter {
   display: flex;

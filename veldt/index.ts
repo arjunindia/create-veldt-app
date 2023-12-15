@@ -71,13 +71,21 @@ const createElement = (
         element.setAttribute("class", props[key]);
         return;
       }
-      if (key === "style") {
-        Object.keys(props[key]).forEach((styleKey: any) => {
-          element.style[
-            styleKey.replace(/-([a-z])/g, (g: any) => {
-              return g[1].toUpperCase();
+      if (key === "style" && typeof props[key] === "object") {
+        function toSnakeCase(inputString: string) {
+          return inputString
+            .split("")
+            .map((character) => {
+              if (character == character.toUpperCase()) {
+                return "-" + character.toLowerCase();
+              } else {
+                return character;
+              }
             })
-          ] = props[key][styleKey];
+            .join("") as any;
+        }
+        Object.keys(props[key]).forEach((styleKey: string) => {
+          element.style[toSnakeCase(styleKey)] = props[key][styleKey];
         });
         return;
       }
@@ -204,13 +212,6 @@ const uuid = () => {
 const ref = <T>(val: T) => {
   return { current: val };
 };
-
-// hmr on dev
-if (process.env.NODE_ENV === "development") {
-  new EventSource("/esbuild").addEventListener("change", () =>
-    location.reload()
-  );
-}
 
 const veldt = {
   polyfill,
