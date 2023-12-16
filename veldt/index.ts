@@ -263,13 +263,13 @@ const replaceRender = (element: HTMLElement, container: HTMLElement) => {
 
 /**
  * insertBefore
- * @description inserts an element into an element, inserts before existing children.
+ * @description inserts an element before another element.
  * @param newNode
  * @param referenceNode
  * @returns void
  **/
 const insertBefore = (newNode: HTMLElement, referenceNode: HTMLElement) => {
-  referenceNode.insertBefore(newNode, referenceNode.firstChild);
+  referenceNode.parentElement?.insertBefore(newNode, referenceNode);
   while (effects.length > 0) effects.pop()?.callback();
 };
 
@@ -281,12 +281,55 @@ const insertBefore = (newNode: HTMLElement, referenceNode: HTMLElement) => {
  * @returns void
  **/
 const insertAfter = (newNode: HTMLElement, referenceNode: HTMLElement) => {
+  referenceNode.parentElement?.insertBefore(newNode, referenceNode.nextSibling);
+  while (effects.length > 0) effects.pop()?.callback();
+};
+
+/**
+ * insertChildBefore
+ * @description inserts an element into an element, inserts before existing children.
+ * @param newNode
+ * @param referenceNode
+ * @returns void
+ **/
+const insertChildBefore = (
+  newNode: HTMLElement,
+  referenceNode: HTMLElement
+) => {
+  if (referenceNode.firstChild === null) {
+    referenceNode.appendChild(newNode);
+    return;
+  }
+  referenceNode.insertBefore(newNode, referenceNode.firstChild);
+
+  while (effects.length > 0) effects.pop()?.callback();
+};
+
+/**
+ * insertChildAfter
+ * @description inserts an element after another element.
+ * @param newNode
+ * @param referenceNode
+ * @returns void
+ **/
+const insertChildAfter = (newNode: HTMLElement, referenceNode: HTMLElement) => {
   if (referenceNode.lastChild === null) {
     referenceNode.appendChild(newNode);
     return;
   }
   referenceNode.insertBefore(newNode, referenceNode.lastChild.nextSibling);
+
   while (effects.length > 0) effects.pop()?.callback();
+};
+
+/**
+ * remove
+ * @description removes an element from the DOM.
+ * @param element
+ * @returns void
+ **/
+const remove = (element: HTMLElement) => {
+  element.parentElement?.removeChild(element);
 };
 
 /**
@@ -341,6 +384,9 @@ const veldt = {
   renderToString,
   insertBefore,
   insertAfter,
+  insertChildBefore,
+  insertChildAfter,
+  remove,
   effect,
   uuid,
   ref,
