@@ -246,7 +246,7 @@ const render = (element: HTMLElement, container: HTMLElement) => {
     }
     container.appendChild(element);
   }
-  effects.pop()?.callback();
+  while (effects.length > 0) effects.pop()?.callback();
 };
 
 /**
@@ -258,6 +258,7 @@ const render = (element: HTMLElement, container: HTMLElement) => {
  **/
 const replaceRender = (element: HTMLElement, container: HTMLElement) => {
   container.parentElement?.replaceChild(element, container);
+  while (effects.length > 0) effects.pop()?.callback();
 };
 
 /**
@@ -269,6 +270,7 @@ const replaceRender = (element: HTMLElement, container: HTMLElement) => {
  **/
 const insertBefore = (newNode: HTMLElement, referenceNode: HTMLElement) => {
   referenceNode.insertBefore(newNode, referenceNode.firstChild);
+  while (effects.length > 0) effects.pop()?.callback();
 };
 
 /**
@@ -284,6 +286,7 @@ const insertAfter = (newNode: HTMLElement, referenceNode: HTMLElement) => {
     return;
   }
   referenceNode.insertBefore(newNode, referenceNode.lastChild.nextSibling);
+  while (effects.length > 0) effects.pop()?.callback();
 };
 
 /**
