@@ -1,7 +1,6 @@
 import veldt from "veldt";
 import "./index.css";
 import soundImage from "./assets/sigmund-t-da_md1qMc-unsplash.jpg";
-import { Link, Route } from "veldt/router";
 const Lol = ({
   count,
   imgRef,
@@ -52,8 +51,6 @@ const App = () => {
             }}
           />
         </p>
-        <Route path="/:lol">{<div>lol</div>}</Route>
-        <Link to="/lol">lol</Link>
         <p>
           Edit <code>src/App.tsx</code> and save to see changes here!
         </p>
