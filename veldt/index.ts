@@ -250,6 +250,17 @@ const render = (element: HTMLElement, container: HTMLElement) => {
 };
 
 /**
+ * replaceRender
+ * @description replaces an element with another element.
+ * @param element
+ * @param container
+ * @returns void
+ **/
+const replaceRender = (element: HTMLElement, container: HTMLElement) => {
+  container.parentElement?.replaceChild(element, container);
+};
+
+/**
  * insertBefore
  * @description inserts an element into an element, inserts before existing children.
  * @param newNode
@@ -323,6 +334,7 @@ const veldt = {
   createElement,
   Fragment,
   render,
+  replaceRender,
   renderToString,
   insertBefore,
   insertAfter,

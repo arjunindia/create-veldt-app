@@ -5,6 +5,7 @@
  *
  */
 import veldt from "veldt";
+
 type RouteProps = {
   path?: string;
   Component?: any;
@@ -12,6 +13,7 @@ type RouteProps = {
   strict?: boolean;
   children?: any;
 };
+
 const Route = ({
   path,
   Component,
@@ -36,7 +38,7 @@ const Route = ({
     if (Component) {
       return <Component />;
     } else {
-      return <>{children}</>;
+      return <veldt.Fragment>{children}</veldt.Fragment>;
     }
   }
 };
