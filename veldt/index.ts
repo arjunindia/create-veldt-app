@@ -50,20 +50,13 @@ const effects: any[] = [];
  * @param type
  * @param props
  * @param children
- * @returns HTMLElement | Text Node
+ * @returns Element | Text Node
  */
 const createElement = (
-  type:
-    | string
-    | Function
-    | HTMLElement
-    | Text
-    | DocumentFragment
-    | Element
-    | null,
+  type: string | Function | Element | Text | DocumentFragment | Element | null,
   props: Record<string, any>,
   ...children: any[]
-): HTMLElement | any => {
+): Element | any => {
   if (!props || !props?.children) {
     if (!props) props = {};
     props["children"] = children;
@@ -132,7 +125,7 @@ const createElement = (
       element.appendChild(document.createTextNode(child));
     } else {
       if (
-        child instanceof HTMLElement ||
+        child instanceof Element ||
         child instanceof Text ||
         child instanceof DocumentFragment ||
         child instanceof Element
@@ -144,7 +137,7 @@ const createElement = (
           if (typeof c === "string") {
             element.appendChild(document.createTextNode(c));
           } else if (
-            c instanceof HTMLElement ||
+            c instanceof Element ||
             c instanceof Text ||
             c instanceof DocumentFragment ||
             c instanceof Element
@@ -191,7 +184,7 @@ const Fragment = (props: any, children: any[]) => {
     if (typeof child === "string") {
       fragment.appendChild(document.createTextNode(child));
     } else if (
-      child instanceof HTMLElement ||
+      child instanceof Element ||
       child instanceof Text ||
       child instanceof DocumentFragment ||
       child instanceof Element
@@ -202,7 +195,7 @@ const Fragment = (props: any, children: any[]) => {
         if (typeof c === "string") {
           fragment.appendChild(document.createTextNode(c));
         } else if (
-          c instanceof HTMLElement ||
+          c instanceof Element ||
           c instanceof Text ||
           c instanceof DocumentFragment ||
           c instanceof Element
@@ -231,10 +224,10 @@ const Fragment = (props: any, children: any[]) => {
 /**
  * render
  * @description renders an element to a container. If the element is null, it will remove the first child of the container. Also runs all side effects after rendering.
- * @param element HTMLElement | Text Node | null
- * @param container HTMLElement
+ * @param element Element | Text Node | null
+ * @param container Element
  */
-const render = (element: HTMLElement, container: HTMLElement) => {
+const render = (element: Element, container: Element) => {
   if (element === null) {
     if (container.firstChild) {
       container.removeChild(container.firstChild);
@@ -256,7 +249,7 @@ const render = (element: HTMLElement, container: HTMLElement) => {
  * @param container
  * @returns void
  **/
-const replaceRender = (element: HTMLElement, container: HTMLElement) => {
+const replaceRender = (element: Element, container: Element) => {
   container.parentElement?.replaceChild(element, container);
   while (effects.length > 0) effects.pop()?.callback();
 };
@@ -268,7 +261,7 @@ const replaceRender = (element: HTMLElement, container: HTMLElement) => {
  * @param referenceNode
  * @returns void
  **/
-const insertBefore = (newNode: HTMLElement, referenceNode: HTMLElement) => {
+const insertBefore = (newNode: Element, referenceNode: Element) => {
   referenceNode.parentElement?.insertBefore(newNode, referenceNode);
   while (effects.length > 0) effects.pop()?.callback();
 };
@@ -280,7 +273,7 @@ const insertBefore = (newNode: HTMLElement, referenceNode: HTMLElement) => {
  * @param referenceNode
  * @returns void
  **/
-const insertAfter = (newNode: HTMLElement, referenceNode: HTMLElement) => {
+const insertAfter = (newNode: Element, referenceNode: Element) => {
   referenceNode.parentElement?.insertBefore(newNode, referenceNode.nextSibling);
   while (effects.length > 0) effects.pop()?.callback();
 };
@@ -292,10 +285,7 @@ const insertAfter = (newNode: HTMLElement, referenceNode: HTMLElement) => {
  * @param referenceNode
  * @returns void
  **/
-const insertChildBefore = (
-  newNode: HTMLElement,
-  referenceNode: HTMLElement
-) => {
+const insertChildBefore = (newNode: Element, referenceNode: Element) => {
   if (referenceNode.firstChild === null) {
     referenceNode.appendChild(newNode);
     return;
@@ -312,7 +302,7 @@ const insertChildBefore = (
  * @param referenceNode
  * @returns void
  **/
-const insertChildAfter = (newNode: HTMLElement, referenceNode: HTMLElement) => {
+const insertChildAfter = (newNode: Element, referenceNode: Element) => {
   if (referenceNode.lastChild === null) {
     referenceNode.appendChild(newNode);
     return;
@@ -328,17 +318,17 @@ const insertChildAfter = (newNode: HTMLElement, referenceNode: HTMLElement) => {
  * @param element
  * @returns void
  **/
-const remove = (element: HTMLElement) => {
+const remove = (element: Element) => {
   element.parentElement?.removeChild(element);
 };
 
 /**
  * renderToString
  * @description renders an element to a string.
- * @param element HTMLElement | Text Node
+ * @param element Element | Text Node
  * @returns string
  */
-const renderToString = (element: HTMLElement) => {
+const renderToString = (element: Element) => {
   const container = document.createElement("div");
   container.appendChild(element);
   return container.innerHTML;

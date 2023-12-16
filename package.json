@@ -17,5 +17,8 @@
     "esbuild": "^0.19.9",
     "esbuild-plugin-public-directory": "^0.0.5",
     "esbuild-server": "^0.3.0"
+  },
+  "dependencies": {
+    "csstype": "^3.1.3"
   }
 }
